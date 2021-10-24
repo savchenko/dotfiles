@@ -1,0 +1,3 @@
+[submodule "themes/Amanita"]
+	path = themes/Amanita
+	url = https://github.com/savchenko/Amanita
