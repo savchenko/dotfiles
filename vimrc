@@ -29,6 +29,7 @@ Plug 'https://github.com/haya14busa/is.vim'
 Plug 'https://github.com/ron-rs/ron.vim'
 
 Plug 'https://github.com/ncm2/float-preview.nvim'
+Plug 'https://github.com/ap/vim-readdir'
 
 " Plug 'https://github.com/lifepillar/vim-colortemplate'
 
@@ -105,7 +106,7 @@ call plug#end()
 " ----------------------------------------------------------------------------
 
 " Get rid of NetRW
-" let loaded_netrwPlugin = 1
+let loaded_netrwPlugin = 1
 
 " Basics
 set ttyfast

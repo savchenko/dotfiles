@@ -28,15 +28,8 @@ MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@op
 # Ciphers: the ciphers to encrypt the connection
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
 
-Host !*.oraclecloud.com
-        ControlMaster    auto
-        ControlPath      ~/.ssh/controls/%r-%k-%p
-        ControlPersist   3600s
-        IdentitiesOnly yes
-        IdentityFile     ~/.ssh/id_ecdsa_sk.pub
-
-
-Host *.oraclecloud.com instance-console.ap-melbourne-1.oci.oraclecloud.com
-        ControlMaster    no
-        HostKeyAlgorithms +sk-ssh-ed25519@openssh.com
-        Ciphers +aes256-gcm@openssh.com
+ControlMaster    auto
+ControlPath      ~/.ssh/controls/%r-%k-%p
+ControlPersist   3600s
+IdentitiesOnly   no
+IdentityFile     ~/.ssh/id_ecdsa_sk
