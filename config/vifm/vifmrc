@@ -98,15 +98,17 @@ set classify+=' ::../::'
 " ---------------------- Bookmarks ----------------------
 
 " Marks
-mark 3 ~/_gc/t3
+mark a ~/shares
 mark b ~/.local/bin/
 mark c ~/code
-mark d ~/Downloads
+mark d ~/Documents
 mark h ~
-mark m ~/Music
+mark m /media
 mark p /tmp
 mark s ~/Desktop/screenshots
 mark t ~/Desktop
+mark u ~/Music
+mark w ~/Downloads
 
 " ----------------- Commands / Hotkeys ------------------
 
@@ -208,7 +210,7 @@ nnoremap <c-w>l :set lsview!<cr>
 nmap o :file<cr>
 
 " Preview on 'w'
-nnoremap w :view<cr>
+nnoremap w :view<cr><Tab>
 vnoremap <silent> w :view<cr>gv
 
 " Toggle wrap setting

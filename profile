@@ -16,6 +16,7 @@ export FILEMANAGER="vifm"
 export FZF_DEFAULT_COMMAND="fd -uu --one-file-system -t f -t d -t l"
 export FZF_DEFAULT_OPTS="--height=99% --reverse --color=dark,fg:#707880,bg:#000000,hl:#b5bd68,fg+:#c5c8c6,bg+:#000000,hl+:#d7ffaf,info:#707880,gutter:#000000,border:#373b41,prompt:#707880,pointer:#de935f,marker:#de935f,spinner:#8abeb7,header:#707880"
 export FZF_PREVIEW_COMMAND="bat --style=plain --color always {} || tree -C {}"
+export GDK_BACKEND=wayland
 export GDK_DPI_SCALE=1
 export GDK_SCALE=1
 export GIT_EDITOR="nvim -u $HOME/.config/nvim/init.vim"
