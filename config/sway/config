@@ -11,21 +11,19 @@ hide_edge_borders --i3 smart
 smart_borders on
 smart_gaps on
 title_align center
-titlebar_border_thickness 0
+titlebar_border_thickness 1
 
 # Set $DISPLAY
-xwayland disable
+xwayland enable
 
 # VRR
 # output * adaptive_sync on
 
 # Screens
 output DP-3 scale 1.0
-output DP-3 pos 6000 452 res 3840x2160
+output DP-3 pos 0 0 res 3840x2160
 output eDP-1 scale 1.0
-output eDP-1 pos 6700 2612 res 1920x1080
-# output HDMI-A-1 scale 1.0
-# output HDMI-A-1 pos 3840 0
+output eDP-1 pos 840 2160 res 1920x1080
 
 # Change "Mod" key to meta-key
 set $mod Mod4
@@ -34,15 +32,13 @@ set $mod Mod4
 # bindswitch --reload lid:on output eDP-1 disable
 # bindswitch --reload --locked lid:on output eDP-1 enable
 
-default_border pixel 2
-
-# Applies only to the windows that are spawned as floating
-default_floating_border pixel 2
-
+#
+# `indicator` is in fact the lower border
+#
 # class -->             border  backgr. text    indicator child_border (try #425059 or #8A8075)
-client.focused          #2b2e30 #2b2e30 #888888 #3a3a3a   #425059
-client.focused_inactive #2b2e30 #2b2e30 #888888 #1d1f21   #2C2620
-client.unfocused        #222426 #222426 #444444 #1d1f21   #2C2620
+client.focused          #425059 #2F3940 #999999 #425059   #425059
+client.focused_inactive #2C2620 #1A1817 #595959 #2C2620   #2C2620
+client.unfocused        #2C2620 #1A1817 #595959 #2C2620   #2C2620
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 
 # toggle tiling / floating
@@ -59,7 +55,7 @@ for_window [app_id="gcolor3"] floating enable
 for_window [app_id="gtk3-widget-factory"] floating enable
 for_window [app_id="veracrypt"] floating enable
 for_window [app_id="wdisplays"] floating enable
-for_window [title=".*mpv$"] floating enable, focus, sticky on
+for_window [title=".*mpv$"] floating enable, focus, sticky on, default_floating_border pixel 2
 for_window [window_role="TfrmFileOp"] floating enable
 for_window [window_role="notification_banner"] floating enable, sticky on
 for_window [window_role="pop-up"] floating enable
@@ -70,7 +66,7 @@ for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
 output * bg #1a1a1a solid_color
 
 # Behavior
-focus_follows_mouse yes
+focus_follows_mouse no
 
 #
 # Controls --------------------------------------------

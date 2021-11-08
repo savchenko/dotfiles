@@ -1,8 +1,8 @@
 {
     "position": "top",
     "modules-left": ["idle_inhibitor", "sway/workspaces", "sway/mode", "custom/sway-scratch"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["custom/outside", "custom/uv", "cpu", "memory", "temperature", "battery", "custom/clock", "tray"],
+    // "modules-center": ["custom/clock"],
+    "modules-right": ["custom/outside", "custom/uv", "cpu", "memory", "temperature", "battery", "custom/date", "custom/clock", "tray"],
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -14,13 +14,13 @@
         }
     },
     // TODO: Add this to the bottom bar
-    "custom/taskbar": {
-        "format": "{icon} {title}",
-        "icon-size": 13,
-        "tooltip": false,
-        "on-click": "activate",
-        "on-click-right": "close"
-    },
+    // "custom/taskbar": {
+    //     "format": "{icon} {title}",
+    //     "icon-size": 13,
+    //     "tooltip": false,
+    //     "on-click": "activate",
+    //     "on-click-right": "close"
+    // },
     "custom/outside": {
         "format": "{} ",
         "interval": 120,
@@ -31,6 +31,10 @@
     "custom/clock": {
         "exec": "echo ' '$(date +'%H:%M')'  '",
         "interval": 10
+    },
+    "custom/date": {
+        "exec": "echo ' '$(date +'%A %d %b')' '",
+        "interval": 1800
     },
     "custom/uv": {
         "format": "☼ {}  ",
