@@ -1157,7 +1157,7 @@ let g:fzf_colors =
 autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 
 " Mostly use 2 spaces as <Tab>
-autocmd FileType text,gitconfig,lua setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType text,gitconfig,lua,sh setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Markdown
 autocmd BufRead,BufNewFile *.md setlocal ft=markdown ts=2 sw=2 softtabstop=2 expandtab
@@ -1568,6 +1568,13 @@ function! s:CopyMatches(bang, line1, line2, args, wholelines)
 endfunction
 command! -bang -nargs=? -range=% CopyMatches call s:CopyMatches(<bang>0, <line1>, <line2>, <q-args>, 0)
 command! -bang -nargs=? -range=% CopyLines call s:CopyMatches(<bang>0, <line1>, <line2>, <q-args>, 1)
+
+" ----------------------------------------------------------------------------
+function ToggleDimSwitch()
+    let &background = &background == "dark" ? "light" : "dark"
+endfunction
+nnoremap <silent> <F12> :call ToggleDimSwitch()<cr>
+
 
 " ----------------------------------------------------------------------------
 " " nvim-qt

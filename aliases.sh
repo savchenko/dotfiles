@@ -415,6 +415,8 @@ alias myip="curl -s https://www.zx2c4.com/ip | cut -b1-15 | head -n1 | grep -o -
 alias ncmpcpp="ncmpcpp --quiet"
 alias cpu_gcc='gcc -v -E -x c /dev/null -o /dev/null -march=native 2>&1 | grep /cc1'
 alias serve='twistd3 --no_save --nodaemon web --path=.'
+alias oneline_files='find . -type f -print0 | xargs -0 stat --printf "%n %a\n"'
+alias oneline_dirs='find . -type d -print0 | xargs -0 stat --printf "%n %a\n"'
 
 # Wireless
 alias wifimon='wavemon -g'

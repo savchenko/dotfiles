@@ -401,7 +401,7 @@ filetype *.apng,*.bmp,*.gif,*.ico,*.icon,*.j2k,*.jp2,*.jpeg,*.jpf,*.jpg,*.jpm,*.
         \ nomacs %c,
 fileviewer *.apng,*.bmp,*.gif,*.ico,*.icon,*.j2k,*.jp2,*.jpeg,*.jpf,*.jpg,*.jpm,*.jpx,*.mng,*.pbm,*.pcx,*.pgm,*.png,*.ppm,*.psd,*.tga,*.tif,*.tiff,*.webp,*.xbm,*.xpm
         " path  previewWidth  previewHeight  useDirectCommunicationWithTerminal
-        \ /home/lbr/.config/vifm/scripts/show-sixel %c %pw %ph %pd
+        \ /home/lbr/.config/vifm/scripts/show-sixel.sh %c %pw %ph %pd
 
 " Audio
 filetype *.ac3,*.ape,*.au,*.axa,*.flac,*.m4a,*.mid,*.midi,*.mka,*.mp3,*.mpc,*.og[agx],*.oga,*.ogg,*.opus,*.ra,*.spx,*.wav,*.wma,*.xspf

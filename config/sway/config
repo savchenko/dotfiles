@@ -1,8 +1,7 @@
-#
-# Look ------------------------------------------------
-#
-default_orientation auto
+# Basics {{{
+set $swaydir $HOME/.config/sway
 
+default_orientation auto
 font pango:Terminus 16px
 seat seat0 xcursor_theme Adwaita 24
 
@@ -12,6 +11,7 @@ smart_borders on
 smart_gaps on
 title_align center
 titlebar_border_thickness 1
+focus_follows_mouse no
 
 # Set $DISPLAY
 xwayland enable
@@ -32,6 +32,8 @@ set $mod Mod4
 # bindswitch --reload lid:on output eDP-1 disable
 # bindswitch --reload --locked lid:on output eDP-1 enable
 
+# }}}
+
 #
 # `indicator` is in fact the lower border
 #
@@ -41,17 +43,12 @@ client.focused_inactive #2C2620 #1A1817 #595959 #2C2620   #2C2620
 client.unfocused        #2C2620 #1A1817 #595959 #2C2620   #2C2620
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 
-# toggle tiling / floating
-# bindsym $mod+Ctrl+f floating toggle #; \
-  # [app_id="foot" tiling] client.unfocused #2b2e30 #2b2e30 #888888 #1d1f21 #fb9a00; \
-  # [app_id="foot" floating] client.unfocused #2b2e30 #2b2e30 #888888 #1d1f21 #2f40cb
-
 # Per-application assignements
 assign [app_id="keepassxc"] "5"
 for_window [app_id="dragon"] sticky enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky on
 for_window [app_id="foot"] titlebar_padding 0 2
-for_window [app_id="gcolor3"] floating enable
+for_window [app_id="gcolor3"] floating enable, sticky on
 for_window [app_id="gtk3-widget-factory"] floating enable
 for_window [app_id="veracrypt"] floating enable
 for_window [app_id="wdisplays"] floating enable
@@ -60,13 +57,14 @@ for_window [window_role="TfrmFileOp"] floating enable
 for_window [window_role="notification_banner"] floating enable, sticky on
 for_window [window_role="pop-up"] floating enable
 for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
-# for_window [app_id="foot" floating]
+# window_type
+# Compare against the window type (_NET_WM_WINDOW_TYPE). Possible values are
+# normal, dialog, utility, toolbar, splash, menu, dropdown_menu, popup_menu,
+# tooltip and notification.
+
 
 # Default wallpaper
 output * bg #1a1a1a solid_color
-
-# Behavior
-focus_follows_mouse no
 
 #
 # Controls --------------------------------------------
@@ -85,8 +83,10 @@ input type:keyboard {
 }
 
 input type:touchpad {
-    events disabled
+    dwt enabled
+    events enabled
     tap disabled
+    scroll_factor 0.25
 }
 
 # input type:touchpad {
@@ -100,8 +100,6 @@ input type:touchpad {
 
 # Hide cursor when typing, available in v1.5.1+
 # seat * hide_cursor when-typing enable
-
-set $swaydir $HOME/.config/sway
 
 # start a terminal, -L is for login shell
 set $term "foot"
@@ -174,16 +172,17 @@ bindsym $mod+Ctrl+F6 exec notify-send -c "hardware" -t 2000 -u low -h "int:value
 bindsym XF86Favorites exec $swaydir/alsaswitcher.sh
 
 # Out
-set $volume_up $(amixer -q set Master 1%+ unmute && amixer sget Master | grep 'Playback' | awk -F'[][]' '{ print substr($2, 0, length($2)-1) }' | sed 's/[^0-9]*//g' | xargs)
-set $volume_down $(amixer -q set Master 1%- unmute && amixer sget Master | grep 'Playback' | awk -F'[][]' '{ print substr($2, 0, length($2)-1) }' | sed 's/[^0-9]*//g' | xargs)
-set $volume_level $(amixer sget Master | grep 'Playback' | awk -F'[][]' '{ print substr($2, 0, length($2)-1) }' | sed 's/[^0-9]*//g' | tail -1 | xargs)
+set $out_control $(amixer scontrols | head -1 | grep -E -o "'\w+'" | tr -d "'")
+set $volume_up $(amixer -q set "$out_control" 1%+ unmute && amixer sget "$out_control" | grep 'Playback' | awk -F'[][]' '{ print substr($2, 0, length($2)-1) }' | sed 's/[^0-9]*//g' | xargs)
+set $volume_down $(amixer -q set "$out_control" 1%- unmute && amixer sget "$out_control" | grep 'Playback' | awk -F'[][]' '{ print substr($2, 0, length($2)-1) }' | sed 's/[^0-9]*//g' | xargs)
+set $volume_level $(amixer sget "$out_control" | grep 'Playback' | awk -F'[][]' '{ print substr($2, 0, length($2)-1) }' | sed 's/[^0-9]*//g' | tail -1 | xargs)
 set $pcm_led_mute $(light -s sysfs/leds/platform::mute -S 100)
 set $pcm_led_unmute $(light -s sysfs/leds/platform::mute -S 0)
 
-bindsym XF86AudioRaiseVolume exec notify-send -c "hardware" -t 2000 -u low -h "int:value:$volume_up" "Master: $volume_level" && $pcm_led_unmute
-bindsym XF86AudioLowerVolume exec notify-send -c "hardware" -t 2000 -u low -h "int:value:$volume_down" "Master: $volume_level"
+bindsym XF86AudioRaiseVolume exec notify-send -c "hardware" -t 2000 -u low -h "int:value:$volume_up" "$out_control: $volume_level" && $pcm_led_unmute
+bindsym XF86AudioLowerVolume exec notify-send -c "hardware" -t 2000 -u low -h "int:value:$volume_down" "$out_control: $volume_level"
 
-bindsym XF86AudioMute exec (amixer get Master | grep off > /dev/null && amixer -q set Master unmute && notify-send -c "hardware" -t 2000 -u low -h "int:value:$volume_level" "Master: $volume_level" && $pcm_led_unmute) || (amixer -q set Master mute && notify-send -c "hardware" -t 2000 -u low -h "int:value:0" "Master muted" && $pcm_led_mute)
+bindsym XF86AudioMute exec (amixer get "$out_control" | grep off > /dev/null && amixer -q set "$out_control" unmute && notify-send -c "hardware" -t 2000 -u low -h "int:value:$volume_level" "$out_control: $volume_level" && $pcm_led_unmute) || (amixer -q set "$out_control" mute && notify-send -c "hardware" -t 2000 -u low -h "int:value:0" "$out_control muted" && $pcm_led_mute)
 
 # In
 set $mic_card $(arecord -l | grep "HDA Digital" | cut -d":" -f1 | sed 's/[^0-9]*//g')
@@ -251,8 +250,7 @@ bindsym $mod+Ctrl+0 move container to workspace $ws0
 
 # Bind to a monitor like this
 workspace $ws1 output eDP-1
-workspace $ws2 output DP-3
-workspace $ws3 output HDMI-A-1
+workspace $ws0 output DP-3
 
 #
 # Windows wrangling ----------------------------------
@@ -337,12 +335,12 @@ bindsym $mod+Shift+s sticky toggle;
 bindsym $mod+Shift+c reload
 
 # Check the window
-bindsym $mod+Shift+question exec '$XDG_CONFIG_HOME/sway/swayprop | xargs -0 notify-send swayprop'
+bindsym $mod+question exec '$XDG_CONFIG_HOME/sway/swayprop | xargs -0 notify-send "Window ID"'
 
 # Exit menu
 set $mode_system (L)ock (E)xit (S)uspend (H)ibernate (R)eboot (P)ower-off
 mode "$mode_system" {
-    # bindsym Shift+l exec --no-startup-id swaylock -f -c 000000, mode "default"
+    bindsym Shift+l exec --no-startup-id physlock -d -m -p "Sway menu", mode "default"
     bindsym Shift+e exit
     bindsym Shift+s exec --no-startup-id systemctl suspend, mode "default"
     bindsym Shift+h exec --no-startup-id systemctl hibernate, mode "default"
@@ -359,8 +357,9 @@ bar {
      swaybar_command waybar
 }
 
-# Dim down the power LED
+# Dim down the power LED... Twice, as it tends to fail at random.
 exec_always "light -s 'sysfs/leds/tpacpi::power' -S 0.00 &> /dev/null"
+exec_always $XDG_CONFIG_HOME/sway/lightsoff.sh
 
 # Gsettings importer
 exec_always $XDG_CONFIG_HOME/sway/gsettings.sh
@@ -378,7 +377,7 @@ exec mpd
 exec wlclock --no-input --position center --layer bottom --clock-colour '#333333' --background-colour '#1a1a1a' --border-size 0 --position top-right --margin 50 20 00 0 --size 300 --hand-width 4 &
 
 # Fix Intel eth issue
-exec_always "echo on | sudo tee /sys/bus/pci/devices/0000\:00\:16.0/power/control"
+exec_always "echo on | tee /sys/bus/pci/devices/0000\:00\:16.0/power/control"
 
 # https://git.archlinux.org/svntogit/community.git/tree/trunk/50-systemd-user.conf?h=packages/sway
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
@@ -386,7 +385,4 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
 # Lock screens after 5 minutes of inactivity, turn off after 7 minutes in total.
-exec swayidle -w \
-         # timeout 300 'swaylock -f -c 000000' \
-         timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
-         # before-sleep 'rm -f "~/.ssh/controls/$USER-*" && swaylock -f -c 000000'
+# exec swayidle timeout 5 'swaymsg "output * dpms off"' timeout 8 'physlock' resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' before-sleep 'rm ~/.ssh/sockets/*'
