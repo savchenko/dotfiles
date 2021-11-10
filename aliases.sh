@@ -418,7 +418,8 @@ alias serve='twistd3 --no_save --nodaemon web --path=.'
 alias oneline_files='find . -type f -print0 | xargs -0 stat --printf "%n %a\n"'
 alias oneline_dirs='find . -type d -print0 | xargs -0 stat --printf "%n %a\n"'
 
-# Wireless
+# Wired & Wireless
 alias wifimon='wavemon -g'
 alias wifilow='sudo iwconfig wlan0 txpower 18'
 alias wifihigh='sudo iwconfig wlan0 txpower 20'
+alias fixeth='echo on | sudo tee /sys/bus/pci/devices/0000\:00\:16.0/power/control'

@@ -364,6 +364,11 @@ exec_always $XDG_CONFIG_HOME/sway/lightsoff.sh
 # Gsettings importer
 exec_always $XDG_CONFIG_HOME/sway/gsettings.sh
 
+# Disable internal screen output when the lid is closed
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+
 # Disable screen if Sway is restarted with the lid closed
 exec_always $XDG_CONFIG_HOME/sway/clamshell.sh
 
@@ -384,5 +389,26 @@ exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
-# Lock screens after 5 minutes of inactivity, turn off after 7 minutes in total.
-# exec swayidle timeout 5 'swaymsg "output * dpms off"' timeout 8 'physlock' resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' before-sleep 'rm ~/.ssh/sockets/*'
+#
+#          "Tale of the two screenlockers"
+#
+# 1. Turn off screen after 2 minutes of inactivity
+# 2. Activate `waylock` after 3 minutes
+# 3. Suspend after 5 minutes
+# 4. Activate `physlock` before suspending the system
+# 5. Turn-on screens and disable power LED afterwards
+#
+# TODO: 
+#       1. Re-read https://geoff.greer.fm/2018/01/02/linux-laptop-locking/
+#       2. Create systemd unit that launches physlock
+#       3. Target the unit from both `swayidle` and `systemd-logind`
+#
+exec swayidle \
+timeout 120 'swaymsg "output * dpms off"' \
+resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
+timeout 180 'waylock --one-way --init-color "#1a1a1a" --fail-color "#1f0000" --input-color "#001f1f"' \
+resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
+timeout 300 'systemctl suspend' \
+before-sleep 'physlock -m' \
+after-resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
+unlock 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00'
