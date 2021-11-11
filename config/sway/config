@@ -52,11 +52,19 @@ for_window [app_id="gcolor3"] floating enable, sticky on
 for_window [app_id="gtk3-widget-factory"] floating enable
 for_window [app_id="veracrypt"] floating enable
 for_window [app_id="wdisplays"] floating enable
+for_window [app_id="net.sourceforge.mumble.mumble"] floating enable
 for_window [title=".*mpv$"] floating enable, focus, sticky on, default_floating_border pixel 2
+for_window [window_role="Preferences"] floating enable
 for_window [window_role="TfrmFileOp"] floating enable
+for_window [window_role="bubble"] floating enable
 for_window [window_role="notification_banner"] floating enable, sticky on
 for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_type="popup_menu"] floating enable
 for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
+for_window [shell="xwayland"] title_format "<span>[X11] %title</span>"
 # window_type
 # Compare against the window type (_NET_WM_WINDOW_TYPE). Possible values are
 # normal, dialog, utility, toolbar, splash, menu, dropdown_menu, popup_menu,
@@ -83,10 +91,8 @@ input type:keyboard {
 }
 
 input type:touchpad {
-    dwt enabled
-    events enabled
+    events disabled
     tap disabled
-    scroll_factor 0.25
 }
 
 # input type:touchpad {
@@ -340,7 +346,7 @@ bindsym $mod+question exec '$XDG_CONFIG_HOME/sway/swayprop | xargs -0 notify-sen
 # Exit menu
 set $mode_system (L)ock (E)xit (S)uspend (H)ibernate (R)eboot (P)ower-off
 mode "$mode_system" {
-    bindsym Shift+l exec --no-startup-id physlock -d -m -p "Sway menu", mode "default"
+    bindsym Shift+l exec --no-startup-id physlock -m, mode "default"
     bindsym Shift+e exit
     bindsym Shift+s exec --no-startup-id systemctl suspend, mode "default"
     bindsym Shift+h exec --no-startup-id systemctl hibernate, mode "default"
@@ -384,10 +390,13 @@ exec wlclock --no-input --position center --layer bottom --clock-colour '#333333
 # Fix Intel eth issue
 exec_always "echo on | tee /sys/bus/pci/devices/0000\:00\:16.0/power/control"
 
+# Re-map stereo input to mono
+exec $XDG_CONFIG_HOME/sway/pa_mono.sh
+
 # https://git.archlinux.org/svntogit/community.git/tree/trunk/50-systemd-user.conf?h=packages/sway
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_RUNTIME_DIR
 exec hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_RUNTIME_DIR
 
 #
 #          "Tale of the two screenlockers"
@@ -398,8 +407,9 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
 # 4. Activate `physlock` before suspending the system
 # 5. Turn-on screens and disable power LED afterwards
 #
-# TODO: 
+# TODO:
 #       1. Re-read https://geoff.greer.fm/2018/01/02/linux-laptop-locking/
+#                  https://github.com/swaywm/swayidle/issues/4#issuecomment-554636684
 #       2. Create systemd unit that launches physlock
 #       3. Target the unit from both `swayidle` and `systemd-logind`
 #
