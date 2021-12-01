@@ -23,10 +23,10 @@ q = quit
 <End> = goto -1
 
 # Panning
-j = pan 0 -50
-k = pan 0 50
-h = pan 50 0
-l = pan -50 0
+j = pan 0 -1
+k = pan 0 1
+h = pan 1 0
+l = pan -1 0
 
 # Zooming
 <equal> = zoom 1
