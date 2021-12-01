@@ -1,7 +1,7 @@
 {
     "position": "top",
     "modules-left": ["idle_inhibitor", "sway/workspaces", "sway/mode", "custom/sway-scratch"],
-    // "modules-center": ["custom/clock"],
+    "modules-center": ["custom/test"],
     "modules-right": ["custom/outside", "custom/uv", "cpu", "memory", "temperature", "battery", "custom/date", "custom/clock", "tray"],
     "sway/workspaces": {
         "disable-scroll": true,
@@ -31,6 +31,10 @@
     "custom/clock": {
         "exec": "echo ' '$(date +'%H:%M')'  '",
         "interval": 10
+    },
+    "custom/test": {
+        "exec": "~/.config/waybar/modules/draft.sh",
+        "interval": 30
     },
     "custom/date": {
         "exec": "echo ' '$(date +'%A %d %b')' '",

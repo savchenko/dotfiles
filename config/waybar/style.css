@@ -66,6 +66,10 @@ window#waybar.foot {
   color: #d1d1d1;
 }
 
+#custom-test {
+  color: #333333;
+}
+
 #battery.warning {
    color:       rgba(255, 210, 4, 1);
 }
