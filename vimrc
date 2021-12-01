@@ -34,6 +34,7 @@ Plug 'https://github.com/ron-rs/ron.vim'
 
 Plug 'https://github.com/ncm2/float-preview.nvim'
 Plug 'https://github.com/ap/vim-readdir'
+Plug 'junegunn/goyo.vim'
 
 " Plug 'https://github.com/lifepillar/vim-colortemplate'
 
@@ -70,6 +71,9 @@ Plug 'https://github.com/vim-laundry/vim-table-mode'
 Plug 'https://github.com/vim-laundry/vim-yaml'
 Plug 'https://github.com/vim-laundry/vim-zoom'
 Plug 'https://github.com/vim-laundry/vim-gotham'
+
+Plug 'https://github.com/junegunn/rainbow_parentheses.vim'
+Plug 'https://github.com/chr4/nginx.vim'
 
 " Plug 'https://github.com/mvanderkamp/vim-pudb-and-jam'
 Plug 'https://github.com/RRethy/vim-tranquille'
@@ -733,12 +737,20 @@ nnoremap <leader>- :call <SID>Cut()<cr>
 " |                            Plugins                                       |
 " +--------------------------------------------------------------------------+
 
+" Rainbow
+
+let g:rainbow#max_level = 16
+let g:rainbow#pairs = [['{', '}']]
+
+" List of colors that you do not want. ANSI code or #RRGGBB
+" let g:rainbow#blacklist = [233, 234]
+
 " Ale linter -----------------------------------------------------------------
 "
 " Use :AleInfo to see the current config
 "
 
-let g:ale_enabled = 1
+let g:ale_enabled = 0
 let g:airline#extensions#ale#enabled = 1
 
 let g:ale_cache_executable_check_failure = 1
@@ -754,7 +766,7 @@ let g:ale_hover_cursor = 1
 let g:ale_hover_to_floating_preview = 1
 let g:ale_keep_list_window_open = 0    " But close automatically
 let g:ale_lint_delay = 1000
-let g:ale_lint_on_enter = 1            " When you open a new or modified buffer
+let g:ale_lint_on_enter = 0            " When you open a new or modified buffer
 let g:ale_lint_on_filetype_changed = 1 " When the filetype changes for a buffer
 let g:ale_lint_on_insert_leave = 0     " On leaving insert mode
 let g:ale_lint_on_save = 1             " When you save a buffer
@@ -909,7 +921,7 @@ augroup END
 
 " Show preview next to the cursor
 let g:float_preview#docked = 0
-let g:float_preview#max_height = 40
+let g:float_preview#max_height = 100
 let g:float_preview#max_width = 100
 
 " ----------------------------------------------------------------------------
