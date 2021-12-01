@@ -27,12 +27,12 @@ bash_completion_path="/usr/share/bash-completion/bash_completion"
 #
 # PS inputs ---------------------------------------------------------------------
 #
-red="\[\e[38;5;1m\]"
-green="\[\e[38;5;2m\]"
-blue="\[\e[38;5;4m\]"
-grey="\[\e[38;5;245m\]"
-light_grey="\[\e[38;5;249m\]"
-clr_reset="\[$(tput sgr0)\]\[\e[0m\]"
+red='\[\e[38;5;1m\]'
+green='\[\e[38;5;2m\]'
+blue='\[\e[38;5;4m\]'
+grey='\[\e[38;5;245m\]'
+light_grey='\[\e[38;5;249m\]'
+clr_reset='\[$(tput sgr0)\]\[\e[0m\]'
 
 if [ $_root -eq 1 ]; then user_color="${red}[!]"; else user_color="${light_grey}"; fi
 
@@ -116,13 +116,13 @@ if [ -x /usr/local/bin/z.lua ] && [ -x /usr/bin/fzf ] \
 fi
 
 # Automatically initialise GPG-agent --------------------------------------------
-if [[ $_root -eq 0 ]] && [[ $_GUI ]]; then
-  if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-    SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-    export SSH_AUTH_SOCK
-  fi
-  echo UPDATESTARTUPTTY | gpg-connect-agent >/dev/null
-fi
+# if [[ $_root -eq 0 ]] && [[ $_GUI ]]; then
+#   if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+#     SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+#     export SSH_AUTH_SOCK
+#   fi
+#   echo UPDATESTARTUPTTY | gpg-connect-agent >/dev/null
+# fi
 
 # Source aliases  ---------------------------------------------------------------
 if [ -r "$HOME/.config/aliases.sh" ]; then . "$HOME/.config/aliases.sh"; fi
