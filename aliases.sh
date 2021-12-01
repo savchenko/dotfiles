@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Coreutils tweaks ----------------------------------------------------------------------
 #
@@ -35,7 +36,7 @@ alias which="command -v"
 #
 
 # Grep for a process without showing `grep` command itself
-psgrep() { ps -e --format "uname,args" | grep -v "      grep " | grep "$@" -i --color=auto; }
+psgrep() { ps -e --format "pid,uname,args" | grep -v "      grep " | grep "$@" -i --color=auto; }
 
 # Open IPv4 ports
 openports() { sudo lsof -Pni4 | awk '{print $1,$3,$8,$9}' | column -t; }
@@ -43,7 +44,7 @@ openports() { sudo lsof -Pni4 | awk '{print $1,$3,$8,$9}' | column -t; }
 # Make directory and cd into it
 mcd() { mkdir "$1" && cd "$1" || exit; }
 
-# Find files not owned by current user in pwd
+# Find files not owned by user in pwd
 notusr() { find . \! -user "$@" -print; }
 
 # Create tmux-split and close it after $editor is terminated
@@ -74,10 +75,6 @@ sstat() { sudo systemctl status "$1"; }
 
 # Last N modified files
 flast() { if [ $# -eq 1 ] && [ $1 -eq $1 ]; then find . -xdev -type f -not -path "*/.git/*" -printf "%T@ %Tc %p\n" | sort -n -r 2> /dev/null | head -${1%} | cut -d" " -f2-; fi }
-
-codelog() {
-  for i in *; do [ -d "$i/.git" ] && (cd $i || return; git log --date=short --pretty=format:"%ad $i %s" --author="$(git config --get user.email)") 2> /dev/null; done | sort | tac
-}
 
 # Single-pass empty directories removal
 emptydirs() {
@@ -183,6 +180,25 @@ function d {
     wn $1 -over | fold -w $COLUMNS -s
   fi
 }
+
+footest(){
+    local E D H M
+    E="3003658200";
+    D=$(($(($(( $E - $(date +%s))) * 1 ))/86400));
+    H=$(date -u --date @$(($E - `date +%s`)) +%H);
+    M=$(date -u --date @$(($E - `date +%s`)) +%M);
+    let "H=10#${H}"; let "M=10#${M}";
+    echo -e "$D days, $H hours and $M minutes\r";
+}
+
+foo() {
+  list=( "$@" )
+  echo "${#list[@]}"        # print array length
+  echo "${list[@]}"         # print array elements
+  for file in "${list[@]}"; do echo "${file:0:5}"; done  # loop over the array
+}
+
+xwl() { env -u WAYLAND_DISPLAY "$1"; } # launch in XWayland
 
 # FZF ----------------------------------------------------------------------------------
 
@@ -333,7 +349,7 @@ alias bfg="java -jar $HOME/.local/bin/bfg.jar"
 alias c,="cd - > /dev/null"
 alias c="clear"
 alias ca="bat --style plain"
-alias dd="dd bs=4M status=progress oflag=sync"
+alias dd="sudo dd bs=4M status=progress oflag=sync"
 alias dmesg="sudo dmesg -Hwx"
 alias fd="fdfind --hidden --no-ignore --follow"
 alias gpg="gpg2"
@@ -365,7 +381,12 @@ alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
 alias gvi="nvim-gtk"
+
+# Configs
 alias vimrc="vim ~/.vimrc"
+alias swayrc="vim ~/.config/sway/config"
+alias aliasrc="vim ~/.config/aliases.sh"
+alias gvars_pc="vim ~/Code/T3/t3_play/group_vars/pc.yml"
 
 # Git
 alias g="git"
@@ -385,8 +406,6 @@ alias ping='grc ping -4'
 alias traceroute='grc traceroute'
 
 # Local
-alias backports_check="sudo apt full-upgrade -t buster-backports --assume-no"
-alias backports_check_oneline='apt -t buster-backports -s upgrade 2> /dev/null | egrep ^Inst | cut -d " " -f 2-3'
 alias cal='ncal -3 -M -b'
 alias fonts_list='fc-list | cut -d":" -f2 | sort | uniq'
 alias fonts_rebuild='fc-cache -fv && mkfontdir ~/.local/share/fonts && xset +fp ~/.local/share/fonts'
@@ -417,9 +436,81 @@ alias cpu_gcc='gcc -v -E -x c /dev/null -o /dev/null -march=native 2>&1 | grep /
 alias serve='twistd3 --no_save --nodaemon web --path=.'
 alias oneline_files='find . -type f -print0 | xargs -0 stat --printf "%n %a\n"'
 alias oneline_dirs='find . -type d -print0 | xargs -0 stat --printf "%n %a\n"'
+alias backports='apt -t bullseye-backports -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
+alias codelog='git log --date=short --pretty=format:"%ad $i %s" --author="$(git config --get user.email)"'
+alias fbt='foot -c ~/.config/foot/foot_bitmap.ini &'
 
 # Wired & Wireless
 alias wifimon='wavemon -g'
 alias wifilow='sudo iwconfig wlan0 txpower 18'
 alias wifihigh='sudo iwconfig wlan0 txpower 20'
 alias fixeth='echo on | sudo tee /sys/bus/pci/devices/0000\:00\:16.0/power/control'
+
+# Images
+pngdown() { pngquant --speed 1 --strip --force "$1"; }
+
+gmdown() {
+  if [ $# -ne 2 ]; then
+    echo -e "\nUsage:\n\tgmdown myImage.foo 100\n\n\
+      Will resize myImage.foo to 100px on the long side.
+      Result will be saved as myImage_100px.foo\n"
+    return 1;
+  elif [[ ! $2 =~ ^-?[0-9]+$ ]]; then
+    echo -e "Second parameter must be an integer";
+    return 2;
+  elif [ "$2" -gt 65535 ] || [ "$2" -lt 1 ]; then
+    echo -e "Size must be within 1..65535 range";
+    return 1;
+  else
+    local fname fext
+    fname="$(echo $1 | rev | cut -d"." -f2- | rev)";
+    fext="$(echo $1 | rev | cut -d"." -f1 | rev)";
+    fext_allowed=("png" "jpg" "jpeg" "webp" "tif" "tiff");
+    for ext in "${fext_allowed[@]}"; do
+      if [ "$ext" = "$fext" ]; then
+        out=$(gm convert -verbose "$1" -resize "$2"x"$2"^ "$fname"_"$2"px."$ext" 2>&1 );
+        fsize_in=$(echo -e "$out" | head -1 | cut -d" " -f6);
+        fsize_out=$(echo -e "$out" | tail -1 | cut -d" " -f6);
+      fi
+    done
+    if [ -z "$out" ]; then
+      echo -e "Unable to convert an extension of .$fext";
+      return 1;
+    else
+      echo "OK: $fsize_in --> $fsize_out";
+    fi
+  fi
+}
+
+# WebP tiff archival
+arc_tiff() {
+  if [ $# -lt 1 ]; then
+    echo -e "Usage:\n\tarc_tiff *.tiff\nor\n\tarc_tiff foo.tiff"
+  elif [ $# -eq 1 ]; then
+    if [ ! -r webP_"$1" ]; then
+      if [[ ${1:0:5} != "webP_" ]]; then
+        gm convert -verbose -compress webp -define \
+          'tiff:webp-lossless=TRUE webp:lossless=true' \
+          -quality 100 "$1" webP_"$1"
+      else
+        echo -e "Refusing to re-compress $1"
+      fi
+    else
+      echo -e "webP_$1 already exists, refusing to overwrite"
+    fi
+  elif [ $# -gt 1 ]; then
+    files=( "$@" )
+    echo -e "\nWorking on ${#files[@]} files...\n"
+    for file in "${files[@]}"; do
+      if [ -r webP_"$file" ]; then
+        echo -e "webP_$file already exists, refusing to overwrite";
+      elif [[ ${file:0:5} != "webP_" ]]; then
+        gm convert -verbose -compress webp -define \
+          'tiff:webp-lossless=TRUE webp:lossless=true' \
+          -quality 100 "$file" webP_"$file"
+      else
+        echo -e "Refusing to re-compress $file"
+      fi
+    done
+  fi
+}
