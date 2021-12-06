@@ -42,7 +42,7 @@ export NVIM_GTK_NO_HEADERBAR=1
 export NVIM_GTK_NO_WINDOW_DECORATION=1
 export NVIM_GTK_PREFER_DARK_THEME=1
 export NVIM_QT_RUNTIME_PATH="/usr/share/nvim-qt/runtime"
-export PATH=$HOME/.local/bin:$HOME/Code/portable/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/code/portable/bin:$HOME/.cargo/bin:$PATH
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -65,6 +65,7 @@ export _ZL_ADD_ONCE=1                # Update Z db only on cd
 export _ZL_DATA="$HOME/.cache/zlua"
 export _ZL_HYPHEN=1                  # Treat hyphen as normal char
 export _ZL_MATCH_MODE=1              # Use enhanced match mode
+export YUBIKEY_PIV_ENABLE_UNSAFE_KEYGEN_ROCA=0
 #
 # Buildflags ------------------------------------------------------------------
 # (see `dpkg-buildflags`)

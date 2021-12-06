@@ -37,6 +37,9 @@ Plug 'https://github.com/ap/vim-readdir'
 Plug 'junegunn/goyo.vim'
 
 " Plug 'https://github.com/lifepillar/vim-colortemplate'
+" Plug 'skywind3000/vim-quickui'
+
+Plug 'https://github.com/chrisbra/SudoEdit.vim'
 
 Plug 'https://github.com/antoinemadec/FixCursorHold.nvim' " Breaks Ale?...
 Plug 'https://github.com/boson-joe/vimwintab'
@@ -369,6 +372,9 @@ map <MiddleMouse> <Nop>
 map! <2-MiddleMouse> <Nop>
 map! <MiddleMouse> <Nop>
 
+" Fix annoying `u` behaviour in visual mode
+vmap u :undo<cr>gv
+
 " Toggle folding globally
 inoremap <F1> :set foldenable!<cr>
 nnoremap <F1> :set foldenable!<cr>
@@ -419,7 +425,7 @@ nmap <C-s> :w!<CR>
 imap <C-s> <C-c>:w!<CR>a
 
 " Sudo write
-nmap <C-A-s> :w !sudo tee "%"<cr><cr>
+" cnoremap w! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>
 
 " Select all as usual (skips to the last symbol)
 nmap <C-a> <esc>gg0vG$<CR>
@@ -745,7 +751,7 @@ let g:rainbow#pairs = [['{', '}']]
 " List of colors that you do not want. ANSI code or #RRGGBB
 " let g:rainbow#blacklist = [233, 234]
 
-" Ale linter -----------------------------------------------------------------
+" ALE linter -----------------------------------------------------------------
 "
 " Use :AleInfo to see the current config
 "
@@ -793,12 +799,12 @@ let g:ale_warn_about_trailing_whitespace = 0
 " let g:ale_python_mypy_auto_poetry = 0
 " let g:ale_python_mypy_executable = 'mypy'
 " let g:ale_python_mypy_ignore_invalid_syntax = 0
-" let g:ale_python_mypy_options = ''
+let g:ale_python_mypy_options = 'ignore_missing_imports = True'
 " let g:ale_python_mypy_show_notes = 1
 " let g:ale_python_mypy_use_global = 0
 
 let g:ale_linters_explicit = 1 " Don't run everything available
-" TODO: gitlint, ansible-lint, json, bash, systemd
+" TODO: gitlint, json, bash, systemd
 let g:ale_linters = {
       \ 'python': ['pyflakes3', 'mypy', 'bandit'],
       \ 'markdown': ['proselint'],
@@ -1169,7 +1175,7 @@ let g:fzf_colors =
 autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 
 " Mostly use 2 spaces as <Tab>
-autocmd FileType text,gitconfig,lua,sh setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType text,gitconfig,lua,sh,vim setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Markdown
 autocmd BufRead,BufNewFile *.md setlocal ft=markdown ts=2 sw=2 softtabstop=2 expandtab
@@ -1184,7 +1190,7 @@ autocmd BufRead,BufNewFile *.htm,*.html,*.css,*.js setlocal tabstop=2 shiftwidth
 autocmd FileType neosnippet,help silent! call airline#extensions#whitespace#disable()
 
 " Python
-autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 textwidth=120
+autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 textwidth=79
 
 " YAML
 " autocmd BufRead,BufNewFile *.yml setlocal syntax=yaml.ansible ts=2 sts=2 sw=2 expandtab noautoindent indentkeys=""
@@ -1263,6 +1269,21 @@ endfunc
 " Open file's $PWD inside of the in-built terminal ---------------------------
 nnoremap <C-a-t> :let $VIM_DIR=expand('%:p:h')<cr>
       \ :terminal<cr>cd $VIM_DIR && clear<cr>
+
+" Rewrap selected text -------------------------------------------------------
+function! Rewrap(length) range
+  if a:length > 0
+    let l:oldtw = &l:textwidth
+    execute "setlocal textwidth=" . a:length
+    execute 'normal gvgqgv'
+    execute "setlocal textwidth=" . l:oldtw
+  else
+    echom 'Wrapped lines must have positive length'
+  endif
+endfunction
+
+" Fix trailing and/or multiple spaces; retab
+vmap gw :call Rewrap(''.input('Line width: '))<cr>
 
 " Strips trailing whitespace and retab ---------------------------------------
 function! <SID>CleanUpRange(where, how) range

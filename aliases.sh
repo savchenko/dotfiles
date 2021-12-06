@@ -436,9 +436,12 @@ alias cpu_gcc='gcc -v -E -x c /dev/null -o /dev/null -march=native 2>&1 | grep /
 alias serve='twistd3 --no_save --nodaemon web --path=.'
 alias oneline_files='find . -type f -print0 | xargs -0 stat --printf "%n %a\n"'
 alias oneline_dirs='find . -type d -print0 | xargs -0 stat --printf "%n %a\n"'
-alias backports='apt -t bullseye-backports -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
 alias codelog='git log --date=short --pretty=format:"%ad $i %s" --author="$(git config --get user.email)"'
 alias fbt='foot -c ~/.config/foot/foot_bitmap.ini &'
+alias xwl='env -u WAYLAND_DISPLAY'
+alias pkg_foreign='aptitude search "?installed?not(?narrow(?installed,?origin(^Debian$)?archive(^stable$)))" --group-by=none -F "%p %v %t %M" | grep -v -E "(stable-security|stable-updates)" | column -t | sort -k3,3 | sed "s/A$/Auto/"'
+alias pkg_backports_available='apt -t bullseye-backports -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
+alias pkg_backports_staging_available='apt -t bullseye-backports-staging -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
 
 # Wired & Wireless
 alias wifimon='wavemon -g'
