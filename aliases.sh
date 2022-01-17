@@ -387,6 +387,7 @@ alias vimrc="vim ~/.vimrc"
 alias swayrc="vim ~/.config/sway/config"
 alias aliasrc="vim ~/.config/aliases.sh"
 alias gvars_pc="vim ~/Code/T3/t3_play/group_vars/pc.yml"
+alias fontrc="vim ~/.config/fontconfig/fonts.conf"
 
 # Git
 alias g="git"
@@ -442,6 +443,8 @@ alias xwl='env -u WAYLAND_DISPLAY'
 alias pkg_foreign='aptitude search "?installed?not(?narrow(?installed,?origin(^Debian$)?archive(^stable$)))" --group-by=none -F "%p %v %t %M" | grep -v -E "(stable-security|stable-updates)" | column -t | sort -k3,3 | sed "s/A$/Auto/"'
 alias pkg_backports_available='apt -t bullseye-backports -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
 alias pkg_backports_staging_available='apt -t bullseye-backports-staging -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
+alias newsway='bash /home/lbr/shares/lbr_code/sway/16_hardened/run.sh'
+alias calc='qalc'
 
 # Wired & Wireless
 alias wifimon='wavemon -g'
@@ -452,9 +455,9 @@ alias fixeth='echo on | sudo tee /sys/bus/pci/devices/0000\:00\:16.0/power/contr
 # Images
 pngdown() { pngquant --speed 1 --strip --force "$1"; }
 
-gmdown() {
+gm_resize() {
   if [ $# -ne 2 ]; then
-    echo -e "\nUsage:\n\tgmdown myImage.foo 100\n\n\
+    echo -e "\nUsage:\n\tgm_resize myImage.foo 100\n\n\
       Will resize myImage.foo to 100px on the long side.
       Result will be saved as myImage_100px.foo\n"
     return 1;

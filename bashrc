@@ -86,6 +86,8 @@ bind -x '"\C-r":"fhstr"'
 
 bind -x '"\C-l"':"reset && exec bash"               # <C-l> resets the terminal
 
+bind Space:magic-space                              # <Space> after `!!`
+
 for N in {0..9};                                    # Don't use esoteric argument features of the Readline
   do
 bind -m vi "$N":

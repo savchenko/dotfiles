@@ -1,5 +1,6 @@
 # export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/dbus_session_bus"
 # export LS_COLORS="so=3;38;2;252;172;227:di=0;38;2;110;162;219:ln=3;38;2;196;160;0:*~=0;38;2;191;191;191:no=0:bd=3;38;2;239;41;41:ow=0:pi=3;38;2;52;226;226:tw=0:fi=0:ex=0;38;2;90;179;7:or=3;38;2;204;0;0;48;2;51;0;0:mi=3;38;2;204;0;0;48;2;51;0;0:st=4:cd=3;38;2;239;41;41"
+# export TMPDIR="$HOME/.cache/TMPDIR"
 export ANSIBLE_NOCOWS=1
 export AWT_TOOLKIT=MToolkit          # Optional, for Java GUIs
 export BAT_THEME="Midnight.hybrid"
@@ -51,7 +52,6 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc"
 export SDL_VIDEODRIVER=wayland
 export STNOUPGRADE=1                 # Don't autoupgrade Syncthing
 export TIMEFORMAT=$'real\t%3lR\nuser\t%3lU\nsys\t%3lS\nCPU\t%P%'
-export TMPDIR="$HOME/.cache/TMPDIR"
 export WGETRC="$HOME/.config/wgetrc"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
