@@ -108,6 +108,8 @@ Plug 'https://github.com/ron-rs/ron.vim'
 Plug 'https://github.com/vim-laundry/vim-mikrotik'
 Plug 'https://github.com/vim-laundry/vim-pandoc-syntax'
 
+Plug 'https://github.com/ishan9299/modus-theme-vim'
+
 " Text objects
 Plug 'https://github.com/kana/vim-textobj-line'
 Plug 'https://github.com/kana/vim-textobj-user'
@@ -276,7 +278,7 @@ endif
 " ----------------------------------------------------------------------------
 
 " Highlight up to 512 chars per line
-set synmaxcol=256
+set synmaxcol=512
 set colorcolumn=
 
 " Attempt to show 24-bit palette with 256 colours fallback
