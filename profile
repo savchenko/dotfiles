@@ -23,7 +23,7 @@ export GDK_SCALE=1
 export GIT_EDITOR="nvim -u $HOME/.config/nvim/init.vim"
 export GNC_CONFIG_HOME="$HOME/.config/gnucash"
 export GNC_DATA_HOME="$HOME/.local/share/gnucash"
-export GPG_TTY=$(tty)                # https://dev.gnupg.org/T3412
+export GPG_TTY="$(tty)"    # https://dev.gnupg.org/T3412
 export GREP_COLOR="32"
 export HSTR_CONFIG=hicolor #,hide-help
 export HSTR_PROMPT="> "
@@ -43,7 +43,7 @@ export NVIM_GTK_NO_HEADERBAR=1
 export NVIM_GTK_NO_WINDOW_DECORATION=1
 export NVIM_GTK_PREFER_DARK_THEME=1
 export NVIM_QT_RUNTIME_PATH="/usr/share/nvim-qt/runtime"
-export PATH=$HOME/.local/bin:$HOME/code/portable/bin:$HOME/.cargo/bin:$PATH
+export PATH="$HOME/.local/bin:$HOME/code/portable/bin:$HOME/.cargo/bin:$PATH"
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -58,6 +58,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CURRENT_DESKTOP=sway
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_RUNTIME_DIR="$HOME/.local/runtime"
+export XDG_SESSION_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 export XKB_DEFAULT_OPTIONS=caps:escape
 export _JAVA_AWT_WM_NONREPARENTING=1 # Optional, for Java GUIs
@@ -66,6 +67,7 @@ export _ZL_DATA="$HOME/.cache/zlua"
 export _ZL_HYPHEN=1                  # Treat hyphen as normal char
 export _ZL_MATCH_MODE=1              # Use enhanced match mode
 export YUBIKEY_PIV_ENABLE_UNSAFE_KEYGEN_ROCA=0
+export SIMPLE_BACKUP_SUFFIX=numbered
 #
 # Buildflags ------------------------------------------------------------------
 # (see `dpkg-buildflags`)
