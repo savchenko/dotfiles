@@ -15,7 +15,7 @@ alias ll="ls -FlAhp --group-directories-first"  # -f append indicator to entries
                                                 # -p append / indicator to directories
 
 alias lt="ls -lth"                              # newest first
-alias lth="ls -lth | head"                      # newest first
+alias lth="ls -lth 2> /dev/null | head"         # newest first
 
 alias cp="cp -iv"                               # prompt before overwrite, be verbose
 
@@ -48,11 +48,12 @@ mcd() { mkdir "$1" && cd "$1" || exit; }
 notusr() { find . \! -user "$@" -print; }
 
 # Create tmux-split and close it after $editor is terminated
-if { [ -n "$TMUX" ]; }; then peek() { tmux split-window -p 40 "$EDITOR" "$@" || exit; }; fi
+if { [ -n "$TMUX" ]; }; then peek() { tmux split-window -p 40 "nvim" "$@" || exit; }; fi
 
 # Compress file or directory
-rmx() { if [ $# -eq 1 ]; then rar a -m5 -ma5 -s -md64m "${1%/}.rar" "${1%/}"; fi }
+rmx() { if [ $# -eq 1 ]; then rar a -m5 -ma5 -md1g "${1%/}.rar" "${1%/}"; fi }
 tmx() { if [ $# -eq 1 ]; then tar cv "${1%/}" | xz -9 > "${1%/}.tar.xz" ; fi }
+zmx() { if [ $# -eq 1 ]; then zip -r -9 "${1%/}".zip "${1%/}"; fi }
 
 # Whois abuse contact
 wabuse() { if [ $# -eq 1 ]; then whois ${1%} | grep -i abuse; fi }
@@ -141,12 +142,20 @@ ffr() { # firefox-resume
   pkill -CONT -f "(^|/)+plugin-container( |$)+"
 }
 
-# imv-wayland with monitor-mode supression
+# imv-wayland and XnView with monitor-mode supression
 im() {
   if [ $# -eq 1 ]; then
-    ( set +m && imv-wayland ${1%} &> /dev/null & )
+    ( set +m && imv-wayland "${1%}" &> /dev/null & )
   else
     ( set +m && imv-wayland . &> /dev/null & )
+  fi
+  set -m
+}
+xn() {
+  if [ $# -eq 1 ]; then
+    ( set +m && xnview "${1%}" &> /dev/null & )
+  else
+    ( set +m && xnview . &> /dev/null & )
   fi
   set -m
 }
@@ -334,6 +343,21 @@ fkill() {
   kill -"${1:-9}" "$pid" &> /dev/null
 }
 
+# RipGrepAll-FZF
+rgf() {
+  RG_PREFIX="rga --files-with-matches"
+  local file
+  file="$(
+    FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+      fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+        --phony -q "$1" \
+        --bind "change:reload:$RG_PREFIX {q}" \
+        --preview-window="70%:wrap"
+  )" &&
+  echo "opening $file" &&
+  xdg-open "$file"
+}
+
 #
 # Aliases -------------------------------------------------------------------------------
 #
@@ -377,6 +401,7 @@ alias xc="wl-copy --trim-newline"
 alias newhostname='cat /usr/share/dict/words | iconv -t ASCII//TRANSLIT | grep -o -x "^[a-z]\{3,5\}[^s,d,y]$" | dd status=none conv=lcase | sort -R 2> /dev/null | uniq -u 2> /dev/null | head -10'
 
 # NeoVim
+alias e="nvim"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
@@ -445,6 +470,16 @@ alias pkg_backports_available='apt -t bullseye-backports -s upgrade 2> /dev/null
 alias pkg_backports_staging_available='apt -t bullseye-backports-staging -s upgrade 2> /dev/null | grep -E ^Inst | grep -E "\[.+\]\s\(" | cut -d " " -f 2-4 | sed s/[]\)\([]//g | column -t'
 alias newsway='bash /home/lbr/shares/lbr_code/sway/16_hardened/run.sh'
 alias calc='qalc'
+alias calibre='calibre --no-update-check --detach'
+alias yt-dlp='yt-dlp --restrict-filenames --trim-filenames 20'
+alias yt-smallvid-bestaud="yt-dlp -f 'ba+res/b'"
+alias signify='signify-openbsd'
+
+# Gammaster
+alias night='gammastep -l -34.92866:138.59863 -b 1:0.75 -r -P -v'
+alias day='gammastep -x -P -r -v'
+
+alias dot_dig="kdig -d @185.228.168.168 +tls-ca +tls-host=family-filter-dns.cleanbrowsing.org"
 
 # Wired & Wireless
 alias wifimon='wavemon -g'
@@ -455,7 +490,7 @@ alias fixeth='echo on | sudo tee /sys/bus/pci/devices/0000\:00\:16.0/power/contr
 # Images
 pngdown() { pngquant --speed 1 --strip --force "$1"; }
 
-gm_resize() {
+imresize() {
   if [ $# -ne 2 ]; then
     echo -e "\nUsage:\n\tgm_resize myImage.foo 100\n\n\
       Will resize myImage.foo to 100px on the long side.
@@ -469,8 +504,8 @@ gm_resize() {
     return 1;
   else
     local fname fext
-    fname="$(echo $1 | rev | cut -d"." -f2- | rev)";
-    fext="$(echo $1 | rev | cut -d"." -f1 | rev)";
+    fname=$(echo "$1" | rev | cut -d"." -f2- | rev);
+    fext=$(echo "$1" | rev | cut -d"." -f1 | rev);
     fext_allowed=("png" "jpg" "jpeg" "webp" "tif" "tiff");
     for ext in "${fext_allowed[@]}"; do
       if [ "$ext" = "$fext" ]; then
