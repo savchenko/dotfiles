@@ -45,6 +45,7 @@
 
 [log]
   decorate = full
+	mailmap = true
 
 [tag]
   gpgsign = false
