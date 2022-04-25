@@ -8,14 +8,16 @@ alias less="less -FXc"                          # -f automatically exit if file 
 
 alias ls="ls --color=auto"
 
-alias ll="ls -FlAhp --group-directories-first"  # -f append indicator to entries
+alias ll="ls -FlAhp --group-directories-first"  # -F append indicator to entries
                                                 # -l long listing format
-                                                # -a don't show ./ and ../
+                                                # -A don't show ./ and ../
                                                 # -h human-readable sizes
                                                 # -p append / indicator to directories
 
+alias lh="ls -Flhp"                             # same, but skip dots / hidden
+
 alias lt="ls -lth"                              # newest first
-alias lth="ls -lth 2> /dev/null | head"         # newest first
+alias lth="ls --color=always -lth 2> /dev/null | head"
 
 alias cp="cp -iv"                               # prompt before overwrite, be verbose
 
@@ -51,7 +53,7 @@ notusr() { find . \! -user "$@" -print; }
 if { [ -n "$TMUX" ]; }; then peek() { tmux split-window -p 40 "nvim" "$@" || exit; }; fi
 
 # Compress file or directory
-rmx() { if [ $# -eq 1 ]; then rar a -m5 -ma5 -md1g "${1%/}.rar" "${1%/}"; fi }
+rmx() { if [ $# -eq 1 ]; then rar a -ol -m5 -ma5 -md1g "${1%/}.rar" "${1%/}"; fi }
 tmx() { if [ $# -eq 1 ]; then tar cv "${1%/}" | xz -9 > "${1%/}.tar.xz" ; fi }
 zmx() { if [ $# -eq 1 ]; then zip -r -9 "${1%/}".zip "${1%/}"; fi }
 
@@ -474,6 +476,7 @@ alias calibre='calibre --no-update-check --detach'
 alias yt-dlp='yt-dlp --restrict-filenames --trim-filenames 20'
 alias yt-smallvid-bestaud="yt-dlp -f 'ba+res/b'"
 alias signify='signify-openbsd'
+alias iostatwatch='sudo S_COLORS=always watch -c iostat -h'
 
 # Gammaster
 alias night='gammastep -l -34.92866:138.59863 -b 1:0.75 -r -P -v'
