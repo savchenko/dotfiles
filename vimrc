@@ -22,25 +22,30 @@
 set rtp +=~/.vim
 call plug#begin('~/.vim/plugged')
 
-" Plug 'https://github.com/vim-laundry/vim-css-color'
-" Plug 'https://github.com/chrisbra/Colorizer'
+" Plugin manager
+Plug 'https://github.com/vim-laundry/vim-plug'
+
+Plug 'https://github.com/pbrisbin/vim-mkdir'
+
 Plug 'https://github.com/norcalli/nvim-colorizer.lua'
-" Plug 'azabiong/vim-highlighter'
 
 " TODO: Check anzu, etc.
 Plug 'https://github.com/haya14busa/is.vim'
-
-Plug 'https://github.com/ron-rs/ron.vim'
 
 Plug 'https://github.com/ncm2/float-preview.nvim'
 Plug 'https://github.com/ap/vim-readdir'
 Plug 'junegunn/goyo.vim'
 
 " Plug 'https://github.com/lifepillar/vim-colortemplate'
+" Plug 'skywind3000/vim-quickui'
 
-Plug 'https://github.com/antoinemadec/FixCursorHold.nvim' " Breaks Ale?...
-Plug 'https://github.com/boson-joe/vimwintab'
-Plug 'https://github.com/dstein64/vim-startuptime' " :StartupTime
+Plug 'https://github.com/chrisbra/SudoEdit.vim'
+
+" Breaks Ale?...
+Plug 'https://github.com/antoinemadec/FixCursorHold.nvim'
+
+" :StartupTime
+Plug 'https://github.com/dstein64/vim-startuptime'
 Plug 'https://github.com/romainl/vim-qf'
 Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 Plug 'https://github.com/vim-laundry/Join'
@@ -51,7 +56,7 @@ Plug 'https://github.com/vim-laundry/fzf'
 Plug 'https://github.com/vim-laundry/fzf.vim'
 Plug 'https://github.com/vim-laundry/indentLine'
 Plug 'https://github.com/vim-laundry/marksigns'
-Plug 'https://github.com/vim-laundry/nerdcommenter'
+Plug 'https://github.com/preservim/nerdcommenter'
 Plug 'https://github.com/vim-laundry/vifm.vim'
 Plug 'https://github.com/vim-laundry/vim-airline'
 Plug 'https://github.com/vim-laundry/vim-airline-themes'
@@ -62,50 +67,65 @@ Plug 'https://github.com/vim-laundry/vim-gitgutter'
 Plug 'https://github.com/vim-laundry/vim-lastplace'
 Plug 'https://github.com/vim-laundry/vim-lion'
 Plug 'https://github.com/vim-laundry/vim-matchquote'
-Plug 'https://github.com/vim-laundry/vim-mikrotik'
-Plug 'https://github.com/vim-laundry/vim-pandoc-syntax'
-Plug 'https://github.com/vim-laundry/vim-plug'
 Plug 'https://github.com/vim-laundry/vim-startify'
 Plug 'https://github.com/vim-laundry/vim-surround'
 Plug 'https://github.com/vim-laundry/vim-table-mode'
-Plug 'https://github.com/vim-laundry/vim-yaml'
 Plug 'https://github.com/vim-laundry/vim-zoom'
-Plug 'https://github.com/vim-laundry/vim-gotham'
 
 Plug 'https://github.com/junegunn/rainbow_parentheses.vim'
-Plug 'https://github.com/chr4/nginx.vim'
 
-" Plug 'https://github.com/mvanderkamp/vim-pudb-and-jam'
+" Search without moving the cursor, g/
 Plug 'https://github.com/RRethy/vim-tranquille'
-Plug 'https://github.com/vim-python/python-syntax'
 
 " Auto-completion & snippets
 Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'https://github.com/Shougo/deoplete.nvim'
+Plug 'https://github.com/davidhalter/jedi-vim'
+" vim-script autocompletion
 Plug 'https://github.com/Shougo/neco-vim'
+
+" Snippets
 Plug 'https://github.com/Shougo/neosnippet-snippets'
 Plug 'https://github.com/Shougo/neosnippet.vim'
-" Plug 'https://github.com/honza/vim-snippets'
-Plug 'racer-rust/vim-racer'
+Plug 'https://github.com/honza/vim-snippets'
 
 Plug 'https://github.com/tpope/vim-repeat'
-Plug 'https://github.com/lambdalisue/reword.vim'
-" Plug 'https://github.com/markonm/hlyank.vim'
+
+" :DiffChanges*
 Plug 'https://github.com/jmcantrell/vim-diffchanges'
 
-" Plug 'https://github.com/vim-laundry/pydoc.vim'
-Plug 'dense-analysis/ale'
+" Linters
+" Plug 'racer-rust/vim-racer'
+Plug 'https://github.com/dense-analysis/ale'
+
+" File formats
+Plug 'https://github.com/vim-python/python-syntax'
 Plug 'https://github.com/tpope/vim-markdown'
-
-Plug 'https://github.com/neomutt/neomutt.vim'
-
-Plug 'https://github.com/vim-laundry/vim-indented-blocks'
 Plug 'https://github.com/cespare/vim-toml'
-Plug 'rust-lang/rust.vim'
-Plug 'https://github.com/glts/vim-textobj-comment'
+Plug 'https://github.com/chr4/nginx.vim'
+Plug 'https://github.com/vim-laundry/vim-yaml'
+Plug 'https://github.com/ron-rs/ron.vim'
+Plug 'https://github.com/vim-laundry/vim-mikrotik'
+Plug 'https://github.com/vim-laundry/vim-pandoc-syntax'
 
-Plug 'kana/vim-textobj-line'
-Plug 'kana/vim-textobj-user'
+Plug 'https://github.com/ishan9299/modus-theme-vim'
+
+" Text objects
+Plug 'https://github.com/kana/vim-textobj-line'
+Plug 'https://github.com/kana/vim-textobj-user'
+Plug 'https://github.com/glts/vim-textobj-comment'
+Plug 'https://github.com/vim-laundry/vim-indented-blocks'
+
+" " Later...
+" Plug 'https://github.com/vim-laundry/pydoc.vim'
+" Plug 'https://github.com/lambdalisue/reword.vim'
+" Plug 'https://github.com/neomutt/neomutt.vim'
+" Plug 'rust-lang/rust.vim'
+" Plug 'https://github.com/mvanderkamp/vim-pudb-and-jam'
+" Plug 'https://github.com/azabiong/vim-highlighter'
+"
+" " WTF
+" Plug 'https://github.com/boson-joe/vimwintab'
 
 call plug#end()
 
@@ -136,7 +156,7 @@ set keymodel=startsel
 set nostartofline
 
 " Write swap if nothing is typed and report CursorHold; in milliseconds
-let g:cursorhold_updatetime = 500
+let g:cursorhold_updatetime = 250
 
 " Intendation
 filetype indent on
@@ -369,6 +389,9 @@ map <MiddleMouse> <Nop>
 map! <2-MiddleMouse> <Nop>
 map! <MiddleMouse> <Nop>
 
+" Fix annoying `u` behaviour in visual mode
+vmap u :undo<cr>gv
+
 " Toggle folding globally
 inoremap <F1> :set foldenable!<cr>
 nnoremap <F1> :set foldenable!<cr>
@@ -397,12 +420,12 @@ map <silent> <F7> :set spell!<cr>
 " inoremap ii <esc>
 
 " PgDown/Up keys on Thinkpads are unfortunate... {{{
-nnoremap <PageDown> <nop>
-nnoremap <PageUp> <nop>
-vnoremap <PageDown> <nop>
-vnoremap <PageUp> <nop>
-inoremap <PageDown> <nop>
-inoremap <PageUp> <nop>
+" nnoremap <PageDown> <nop>
+" nnoremap <PageUp> <nop>
+" vnoremap <PageDown> <nop>
+" vnoremap <PageUp> <nop>
+" inoremap <PageDown> <nop>
+" inoremap <PageUp> <nop>
 " }}}
 
 " Remap leader from `\` to `Space`
@@ -419,7 +442,7 @@ nmap <C-s> :w!<CR>
 imap <C-s> <C-c>:w!<CR>a
 
 " Sudo write
-nmap <C-A-s> :w !sudo tee "%"<cr><cr>
+" cnoremap w! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>
 
 " Select all as usual (skips to the last symbol)
 nmap <C-a> <esc>gg0vG$<CR>
@@ -745,12 +768,12 @@ let g:rainbow#pairs = [['{', '}']]
 " List of colors that you do not want. ANSI code or #RRGGBB
 " let g:rainbow#blacklist = [233, 234]
 
-" Ale linter -----------------------------------------------------------------
+" ALE linter -----------------------------------------------------------------
 "
 " Use :AleInfo to see the current config
 "
 
-let g:ale_enabled = 0
+let g:ale_enabled = 1
 let g:airline#extensions#ale#enabled = 1
 
 let g:ale_cache_executable_check_failure = 1
@@ -793,14 +816,14 @@ let g:ale_warn_about_trailing_whitespace = 0
 " let g:ale_python_mypy_auto_poetry = 0
 " let g:ale_python_mypy_executable = 'mypy'
 " let g:ale_python_mypy_ignore_invalid_syntax = 0
-" let g:ale_python_mypy_options = ''
+" let g:ale_python_mypy_options = 'ignore_missing_imports = True'
 " let g:ale_python_mypy_show_notes = 1
 " let g:ale_python_mypy_use_global = 0
 
 let g:ale_linters_explicit = 1 " Don't run everything available
-" TODO: gitlint, ansible-lint, json, bash, systemd
+" TODO: gitlint, json, bash, systemd
 let g:ale_linters = {
-      \ 'python': ['pyflakes3', 'mypy', 'bandit'],
+      \ 'python': ['mypy', 'bandit'],
       \ 'markdown': ['proselint'],
       \ 'yaml': ['yamllint', 'ansible-lint'],
       \ 'ansible': ['ansible-lint'],
@@ -924,31 +947,47 @@ let g:float_preview#docked = 0
 let g:float_preview#max_height = 100
 let g:float_preview#max_width = 100
 
+" Jedi-vim -------------------------------------------------------------------
+
+" Don't use autocomplete from Jedi plugin, rely on Deoplete
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+
+" open the go-to function in split, not another buffer
+let g:jedi#use_splits_not_buffers = "bottom"
+
+" Show signatures in command line
+let g:jedi#show_call_signatures = "2"
+
+" Jedi hotkeys
+let g:jedi#goto_command = ""
+let g:jedi#goto_assignments_command = ""
+let g:jedi#goto_stubs_command = "<leader>s"
+let g:jedi#goto_definitions_command = "<leader>gd"
+let g:jedi#documentation_command = "gd"
+let g:jedi#usages_command = "<leader>us"
+let g:jedi#rename_command = "<leader>rn"
+
 " ----------------------------------------------------------------------------
 
 " Nerd commenter
  let g:NERDCommentEmptyLines        = 1
  let g:NERDCompactSexyComs          = 0
  let g:NERDCreateDefaultMappings    = 0
- let g:NERDLPlace                   = "x"
- let g:NERDRPlace                   = "x"
  let g:NERDCommentWholeLinesInVMode = 1
  let g:NERDRemoveExtraSpaces        = 1
  let g:NERDSpaceDelims              = 1
  let g:NERDTrimTrailingWhitespace   = 1
  let g:NERDUsePlaceHolders          = 1
 
-nnoremap <leader>cc :call NERDComment('n', 'Toggle')<cr>
-vnoremap <leader>cc <esc>m9 :call NERDComment('v', 'Toggle')<cr>`9dm9
+nnoremap <leader>cc :call nerdcommenter#Comment('n', 'Toggle')<cr>
+vnoremap <leader>cc <esc>m9 :call nerdcommenter#Comment('v', 'Toggle')<cr>`9dm9
 
-nnoremap <leader>cl :call NERDComment('n', 'AlignLeft')<cr>
-vnoremap <leader>cl <esc>m9 :call NERDComment('v', 'AlignLeft')<cr>`9dm9
+nnoremap <leader>cl :call nerdcommenter#Comment('n', 'AlignLeft')<cr>
+vnoremap <leader>cl <esc>m9 :call nerdcommenter#Comment('v', 'AlignLeft')<cr>`9dm9
 
-nnoremap <leader>cu :call NERDComment('n', 'Uncomment')<cr>
-vnoremap <leader>cu <esc>m9 :call NERDComment('v', 'Uncomment')<cr>`9dm9
-
-" nnoremap <leader>cn :call NERDComment('n', 'Nested')<cr>
-" vnoremap <leader>cn <esc>m9 :call NERDComment('v', 'Nested')<cr>`9dm9
+nnoremap <leader>cu :call nerdcommenter#Comment('n', 'Uncomment')<cr>
+vnoremap <leader>cu <esc>m9 :call nerdcommenter#Comment('v', 'Uncomment')<cr>`9dm9
 
 " ----------------------------------------------------------------------------
 
@@ -1169,7 +1208,7 @@ let g:fzf_colors =
 autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 
 " Mostly use 2 spaces as <Tab>
-autocmd FileType text,gitconfig,lua,sh setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType text,gitconfig,lua,sh,vim setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Markdown
 autocmd BufRead,BufNewFile *.md setlocal ft=markdown ts=2 sw=2 softtabstop=2 expandtab
@@ -1180,11 +1219,15 @@ autocmd BufRead,BufNewFile *.csv setlocal ft=csv
 " Web documents
 autocmd BufRead,BufNewFile *.htm,*.html,*.css,*.js setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
+" Json
+autocmd BufRead,BufNewFile *.disa setlocal ft=json
+autocmd FileType json setlocal conceallevel=0
+
 " Don't nag about mixed content in neosnippet and help
 autocmd FileType neosnippet,help silent! call airline#extensions#whitespace#disable()
 
-" Python
-autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 textwidth=120
+" Python, extend comments on <cr> and (o|O)
+autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 textwidth=79 formatoptions+=ro cinkeys-=0# indentkeys-=0# nosmartindent
 
 " YAML
 " autocmd BufRead,BufNewFile *.yml setlocal syntax=yaml.ansible ts=2 sts=2 sw=2 expandtab noautoindent indentkeys=""
@@ -1263,6 +1306,21 @@ endfunc
 " Open file's $PWD inside of the in-built terminal ---------------------------
 nnoremap <C-a-t> :let $VIM_DIR=expand('%:p:h')<cr>
       \ :terminal<cr>cd $VIM_DIR && clear<cr>
+
+" Rewrap selected text -------------------------------------------------------
+function! Rewrap(length) range
+  if a:length > 0
+    let l:oldtw = &l:textwidth
+    execute "setlocal textwidth=" . a:length
+    execute 'normal gvgqgv'
+    execute "setlocal textwidth=" . l:oldtw
+  else
+    echom 'Wrapped lines must have positive length'
+  endif
+endfunction
+
+" Fix trailing and/or multiple spaces; retab
+vmap gw :call Rewrap(''.input('Line width: '))<cr>
 
 " Strips trailing whitespace and retab ---------------------------------------
 function! <SID>CleanUpRange(where, how) range

@@ -5,7 +5,7 @@ default_orientation auto
 font pango:Terminus 16px
 seat seat0 xcursor_theme Adwaita 24
 
-default_border pixel 3
+default_border pixel 4
 focus_follows_mouse yes
 gaps inner 12
 hide_edge_borders smart
@@ -23,9 +23,10 @@ xwayland enable
 
 # Screens
 output DP-3 scale 1.0
-output DP-3 pos 0 0 res 3840x2160
-output eDP-1 scale 1.0
-output eDP-1 pos 840 2160 res 1920x1080
+output DP-3 pos 2160 842 res 3840x2160
+output DP-2 scale 1.0
+output DP-2 pos 0 0 res 3840x2160
+output DP-2 transform 270
 
 # Change "Mod" key to meta-key
 set $mod Mod4
@@ -49,18 +50,22 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 assign [app_id="keepassxc"] "5"
 for_window [app_id="dragon"] floating enable, sticky on
 for_window [app_id="dragon"] sticky enable
+for_window [app_id="telegramdesktop"] floating enable
 for_window [app_id="firefox" title="Developer Tools*"] floating enable, sticky on
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky on
 for_window [app_id="gcolor3"] floating enable, sticky on
 for_window [app_id="gtk3-widget-factory"] floating enable
-for_window [app_id="imv"] floating enable, sticky on, border none
+for_window [app_id="imv"] floating enable, sticky on #, border none
 for_window [app_id="mpv"] floating enable, sticky on, border none
 for_window [app_id="net.sourceforge.mumble.mumble"] floating enable
 for_window [app_id="org.gnome.Nautilus"] floating enable
 for_window [app_id="veracrypt"] floating enable
 for_window [app_id="obs"] floating enable
 for_window [app_id="wdisplays"] floating enable
+for_window [app_id="thunderbird"] floating enable
+for_window [app_id="doublecmd"] floating enable
 for_window [class="info|GtkFileChooserDialog"] floating enable
+for_window [class="Double Commander"] floating enable
 for_window [shell="xwayland"] title_format "<span>[X11] %title</span>"
 for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
 for_window [window_role="Preferences"] floating enable
@@ -91,8 +96,8 @@ input type:pointer {
 }
 
 input type:keyboard {
-    xkb_layout us
-    xkb_options ctrl:nocaps
+    xkb_layout "us,ua"
+    xkb_options "grp:win_space_toggle,ctrl:nocaps"
     repeat_delay 500
     repeat_rate 20
 }
@@ -101,6 +106,12 @@ input type:touchpad {
     events disabled
     tap disabled
 }
+
+input * {
+    # xkb_variant "colemak,,typewriter"
+}
+
+# input <identifier> xkb_model "pc101"
 
 # input type:touchpad {
 #     dwt enabled
@@ -266,8 +277,8 @@ bindsym $mod+Ctrl+9 move container to workspace $ws9
 bindsym $mod+Ctrl+0 move container to workspace $ws0
 
 # Bind to a monitor like this
-workspace $ws1 output eDP-1
-workspace $ws0 output DP-3
+# workspace $ws1 output eDP-1
+# workspace $ws0 output DP-3
 
 #
 # Windows wrangling ----------------------------------
@@ -317,15 +328,15 @@ bindsym $mod+Ctrl+Up move up
 bindsym $mod+Ctrl+Right move right
 
 # Move window to another screen (monitor)
-bindsym $mod+Control+m move window to output up ; focus output up
+bindsym $mod+Control+m move window to output left ; focus output left
 
 # Move focus (cursor) to another monitor
 # bindsym $mod+Control+Left focus output left
 # bindsym $mod+Control+Right focus output right
 
 # This flips between two screens
-bindsym $mod+Tab focus output up
-bindsym $mod+m focus output down
+# bindsym $mod+Tab focus output up
+bindsym $mod+m focus output left
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -343,7 +354,7 @@ bindsym $mod+backslash split horizontal ; exec $term
 bindsym $mod+Ctrl+f floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # Toggles sticky window, TODO: Custom border
 bindsym $mod+Shift+s sticky toggle;
@@ -375,9 +386,9 @@ bar {
 }
 
 # Dim down the power LED... Twice, as it tends to fail at random.
-exec_always "light -s 'sysfs/leds/tpacpi::power' -S 0.00 &> /dev/null"
-exec_always "light -s sysfs/leds/platform::micmute -S 0"
-exec_always $XDG_CONFIG_HOME/sway/lightsoff.sh
+# exec_always "light -s 'sysfs/leds/tpacpi::power' -S 0.00 &> /dev/null"
+# exec_always "light -s sysfs/leds/platform::micmute -S 0"
+# exec_always $XDG_CONFIG_HOME/sway/lightsoff.sh
 
 # Gsettings importer
 exec_always $XDG_CONFIG_HOME/sway/gsettings.sh
@@ -388,7 +399,7 @@ exec_always $XDG_CONFIG_HOME/sway/gsettings.sh
 # bindswitch --reload --locked lid:off output $laptop enable
 
 # Disable screen if Sway is restarted with the lid closed
-exec_always $XDG_CONFIG_HOME/sway/clamshell.sh
+# exec_always $XDG_CONFIG_HOME/sway/clamshell.sh
 
 # Notifier
 exec mako
@@ -400,7 +411,7 @@ exec mpd
 exec wlclock --no-input --position center --layer bottom --clock-colour '#333333' --background-colour '#1a1a1a' --border-size 0 --position top-right --margin 50 20 00 0 --size 300 --hand-width 4 &
 
 # Fix Intel eth issue
-exec_always "echo on | tee /sys/bus/pci/devices/0000\:00\:16.0/power/control"
+# exec_always "echo on | tee /sys/bus/pci/devices/0000\:00\:16.0/power/control"
 
 # Re-map stereo input to mono
 exec $XDG_CONFIG_HOME/sway/pa_mono.sh
@@ -429,11 +440,11 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
 #       3. Target the unit from both `swayidle` and `systemd-logind`
 #
 exec swayidle \
-timeout 120 'swaymsg "output * dpms off"' \
-resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
-timeout 180 'waylock --one-way --init-color "#1a1a1a" --fail-color "#1f0000" --input-color "#001f1f"' \
-resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
-timeout 300 'systemctl suspend' \
-before-sleep 'physlock -m' \
-after-resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
-unlock 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00'
+# timeout 180 'swaymsg "output * dpms off"' \
+resume 'swaymsg "output * dpms on"' \
+# timeout 360 'waylock --one-way --init-color "#1a1a1a" --fail-color "#1f0000" --input-color "#001f1f"' \
+# resume 'swaymsg "output * dpms on" && exec light -s sysfs/leds/tpacpi::power -S 0.00' \
+# timeout 720 'systemctl suspend' \
+# before-sleep 'physlock -m' \
+after-resume 'swaymsg "output * dpms on"' \
+unlock 'swaymsg "output * dpms on"'

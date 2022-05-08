@@ -77,6 +77,9 @@ set fillchars='vborder:┃'
 " Ruler (text next to the commandline)
 set rulerformat='%[%x excluded%]'
 
+" Show number of files in folders (before ga/gA is pressed)
+set dirsize=nitems
+
 " Don't wait too long before showing preview TODO: Doesn't work?
 " set previewoptions="graphicsdelay:500"
 
@@ -109,6 +112,7 @@ mark s ~/Desktop/screenshots
 mark t ~/Desktop
 mark u ~/Music
 mark w ~/Downloads
+mark 2 ~/Documents/world/AU/2022
 
 " ----------------- Commands / Hotkeys ------------------
 
@@ -147,6 +151,13 @@ nnoremap <space>i :history dir<cr>
 nnoremap <space>/ :history search<cr>
 nnoremap <space>= :history filter<cr>
 nnoremap <space>? :history input<cr>
+
+" Re-calculate sizes of all elements
+nmap <c-s> :%select<cr>ga<esc><esc>
+
+" Back/forward
+nmap <c-p> :histnext<cr>
+nmap <c-o> :histprev<cr>
 
 " Go ..
 nnoremap .. gh
@@ -250,10 +261,6 @@ command shasum sha1sum %f %m
 " Git
 command git git status --porcelain %d | cut -c4- | sed -r "s#^.*$(basename $(pwd))/?##" %U
 command log git lf -- %c 2>&1 %m
-
-" Back/forward
-nmap <c-p> :histnext<cr>
-nmap <c-o> :histprev<cr>
 
 " Selections
 nmap J :select<cr>j
@@ -395,10 +402,8 @@ fileviewer *.epub pandoc -f epub -t plain %c
 
 " Image
 filetype *.apng,*.bmp,*.gif,*.ico,*.icon,*.j2k,*.jp2,*.jpeg,*.jpf,*.jpg,*.jpm,*.jpx,*.mng,*.pbm,*.pcx,*.pgm,*.png,*.ppm,*.psd,*.tga,*.tif,*.tiff,*.webp,*.xbm,*.xpm,*.svg,*.svgz
-        \ {Open in imv}
-        \ imv-wayland %f &,
-        \ {Open in nomacs}
-        \ nomacs %c,
+        \ {IMV}
+        \ imv-folder %f &,
 fileviewer *.apng,*.bmp,*.gif,*.ico,*.icon,*.j2k,*.jp2,*.jpeg,*.jpf,*.jpg,*.jpm,*.jpx,*.mng,*.pbm,*.pcx,*.pgm,*.png,*.ppm,*.psd,*.tga,*.tif,*.tiff,*.webp,*.xbm,*.xpm
         " path  previewWidth  previewHeight  useDirectCommunicationWithTerminal
         \ /home/lbr/.config/vifm/scripts/show-sixel.sh %c %pw %ph %pd

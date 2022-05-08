@@ -13,20 +13,20 @@ overlay_text = [$imv_current_index/$imv_file_count]\ \ $(echo $imv_current_file 
 q = quit
 
 # Image navigation
-<Left> = prev
-<Down> = prev
+h = prev
+j = prev
 <bracketleft> = prev
-<Right> = next
-<Up> = next
+l = next
+k = next
 <bracketright> = next
 <Home> = goto 1
 <End> = goto -1
 
 # Panning
-j = pan 0 -1
-k = pan 0 1
-h = pan 1 0
-l = pan -1 0
+<Down> = pan 0 -1
+<Up> = pan 0 1
+<Left> = pan 1 0
+<Right> = pan -1 0
 
 # Zooming
 <equal> = zoom 1
@@ -43,7 +43,7 @@ v = flip horizontal
 <Shift+V> = flip vertical
 <Ctrl+s> = upscaling next
 a = zoom actual
-r = reset
+# r = reset
 0 = background checks
 1 = background 000000
 2 = background 333333
@@ -53,8 +53,9 @@ r = reset
 6 = backgorund FCFCFC
 
 # Execs
-y = exec wl-copy < $imv_current_file && notify-send "Clipboard" -i $imv_current_file
-o = exec dragon "$imv_current_file" && notify-send "Dragon" -i $imv_current_file
+y = exec wl-copy < "$imv_current_file" && notify-send "Clipboard" -i "$imv_current_file";
+r = exec imv_rename base $imv_pid "$imv_current_file" &
+o = exec notify-send "$imv_current_file" -i "$imv_current_file" && dragon "$imv_current_file" &
 dd = exec rm "$imv_current_file"; next
 
 # Gif playback
