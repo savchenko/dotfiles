@@ -1,6 +1,6 @@
 # export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/dbus_session_bus"
 # export LS_COLORS="so=3;38;2;252;172;227:di=0;38;2;110;162;219:ln=3;38;2;196;160;0:*~=0;38;2;191;191;191:no=0:bd=3;38;2;239;41;41:ow=0:pi=3;38;2;52;226;226:tw=0:fi=0:ex=0;38;2;90;179;7:or=3;38;2;204;0;0;48;2;51;0;0:mi=3;38;2;204;0;0;48;2;51;0;0:st=4:cd=3;38;2;239;41;41"
-# export TMPDIR="$HOME/.cache/TMPDIR"
+export TMPDIR="$HOME/.cache/TMPDIR"
 export ANSIBLE_NOCOWS=1
 export AWT_TOOLKIT=MToolkit          # Optional, for Java GUIs
 export BAT_THEME="Midnight.hybrid"
@@ -23,7 +23,6 @@ export GDK_SCALE=1
 export GIT_EDITOR="nvim -u $HOME/.config/nvim/init.vim"
 export GNC_CONFIG_HOME="$HOME/.config/gnucash"
 export GNC_DATA_HOME="$HOME/.local/share/gnucash"
-export GPG_TTY="$(tty)"    # https://dev.gnupg.org/T3412
 export GREP_COLOR="32"
 export HSTR_CONFIG=hicolor #,hide-help
 export HSTR_PROMPT="> "
