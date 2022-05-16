@@ -118,13 +118,15 @@ if [ -x /usr/local/bin/z.lua ] && [ -x /usr/bin/fzf ] \
 fi
 
 # Automatically initialise GPG-agent --------------------------------------------
-# if [[ $_root -eq 0 ]] && [[ $_GUI ]]; then
-#   if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-#     SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-#     export SSH_AUTH_SOCK
-#   fi
-#   echo UPDATESTARTUPTTY | gpg-connect-agent >/dev/null
-# fi
+if [[ $_root -eq 0 ]] && [ -r "$SWAYSOCK" ]; then
+  if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+    SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    GPG_TTY=$(tty)
+    export SSH_AUTH_SOCK
+    export GPG_TTY        # https://dev.gnupg.org/T3412
+  fi
+  echo UPDATESTARTUPTTY | gpg-connect-agent >/dev/null
+fi
 
 # Source aliases  ---------------------------------------------------------------
 if [ -r "$HOME/.config/aliases.sh" ]; then . "$HOME/.config/aliases.sh"; fi
