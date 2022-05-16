@@ -211,6 +211,21 @@ foo() {
 
 xwl() { env -u WAYLAND_DISPLAY "$1"; } # launch in XWayland
 
+# Multihighlighter, can be multipiped
+function highlight() {
+  declare -A fg_color_map
+  fg_color_map[black]=30
+  fg_color_map[red]=31
+  fg_color_map[green]=32
+  fg_color_map[yellow]=33
+  fg_color_map[blue]=34
+  fg_color_map[magenta]=35
+  fg_color_map[cyan]=36
+  fg_c=$(echo -e "\e[1;${fg_color_map[$1]}m")
+  c_rs=$'\e[0m'
+  sed -u s"/$2/$fg_c\0$c_rs/g"
+}
+
 # FZF ----------------------------------------------------------------------------------
 
 FCLR="--color=dark,fg:#707880,bg:#000000,hl:#b5bd68,fg+:#c5c8c6,bg+:#000000,hl+:#d7ffaf,info:#707880,gutter:#000000,border:#373b41,prompt:#707880,pointer:#de935f,marker:#de935f,spinner:#8abeb7,header:#707880"
@@ -489,6 +504,13 @@ alias wifimon='wavemon -g'
 alias wifilow='sudo iwconfig wlan0 txpower 18'
 alias wifihigh='sudo iwconfig wlan0 txpower 20'
 alias fixeth='echo on | sudo tee /sys/bus/pci/devices/0000\:00\:16.0/power/control'
+alias wifion='iwctl adapter phy0 set-property Powered on && iwctl device wlan0 set-property Powered on && sudo iwconfig wlan0 txpower 18'
+alias wifioff='iwctl adapter phy0 set-property Powered off && iwctl device wlan0 set-property Powered off'
+wifistatus() {
+  local device=$(iwctl device wlan0 show | grep Powered | cut -d" " -f 20-25 | xargs)
+  local adapter=$(iwctl adapter phy0 show | grep Powered | cut -d" " -f 20-25 | xargs)
+  echo -e "Device: $device\nAdapter: $adapter"
+}
 
 # Images
 pngdown() { pngquant --speed 1 --strip --force "$1"; }
